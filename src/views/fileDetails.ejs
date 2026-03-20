@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>File Details</h2>
+
+    <p><strong>Name:</strong>
+        <%= file.filename %>
+    </p>
+    <p><strong>Size:</strong>
+        <%= file.size %> bytes
+    </p>
+    <p><strong>Uploaded:</strong>
+        <%= file.createdAt.toLocaleString() %>
+    </p>
+
+    <a href="/files/<%= file.id %>/download">
+        <button>Download</button>
+    </a>
+</body>
+
+</html>
