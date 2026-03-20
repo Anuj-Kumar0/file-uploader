@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Your Folders</h2>
+
+    <form method="POST" action="/folders">
+        <input name="name" placeholder="Folder name" required />
+        <button>Create</button>
+    </form>
+
+    <ul>
+        <% folders.forEach(folder=> { %>
+            <li>
+                <strong>
+                    <%= folder.name %>
+                </strong>
+                <form method="POST" action="/folders/delete/<%= folder.id %>" style="display:inline;">
+                    <button>Delete</button>
+                </form>
+
+                <!-- List files inside this folder -->
+                <% if (folder.files.length> 0) { %>
+                    <ul>
+                        <% folder.files.forEach(file=> { %>
+                            <li>
+                                <a href="/files/<%= file.id %>">
+                                    <%= file.filename %>
+                                </a>
+                                (<%= file.size %> bytes)
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } else { %>
+                        <p>No files in this folder.</p>
+                        <% } %>
+            </li>
+            <% }) %>
+    </ul>
+</body>
+
+</html>
