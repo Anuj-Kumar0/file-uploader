@@ -23,4 +23,30 @@ model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
   password String
+
+  folders Folder[]
+  files   File[]
+}
+
+model Folder {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  files     File[]
+  createdAt DateTime @default(now())
+}
+
+model File {
+  id       Int    @id @default(autoincrement())
+  filename String
+  path     String
+  size     Int
+  userId   Int
+  folderId Int?
+
+  user   User    @relation(fields: [userId], references: [id])
+  folder Folder? @relation(fields: [folderId], references: [id])
+
+  createdAt DateTime @default(now())
 }
