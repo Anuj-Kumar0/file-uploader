@@ -38,15 +38,15 @@ model Folder {
 }
 
 model File {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   filename String
-  path     String
+  url      String
   size     Int
   userId   Int
   folderId Int?
-
-  user   User    @relation(fields: [userId], references: [id])
-  folder Folder? @relation(fields: [folderId], references: [id])
+  path     String
+  user     User    @relation(fields: [userId], references: [id])
+  folder   Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }
