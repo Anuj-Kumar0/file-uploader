@@ -28,9 +28,19 @@
                                 📁 <%= folder.name %>
                             </a>
 
-                            <form method="POST" action="/folders/delete/<%= folder.id %>">
-                                <button type="submit">Delete</button>
-                            </form>
+                            <div class="folder-actions">
+                                <form method="POST" action="/share" class="share-form">
+                                    <input type="hidden" name="folderId" value="<%= folder.id %>" />
+
+                                    <input class="share-duration" name="duration" placeholder="Days" required />
+
+                                    <button class="share-btn">Share</button>
+                                </form>
+
+                                <form method="POST" action="/folders/delete/<%= folder.id %>">
+                                    <button class="delete-btn" type="submit">Delete</button>
+                                </form>
+                            </div>
                         </li>
                         <% }) %>
                 </ul>
