@@ -2,21 +2,27 @@ import { prisma } from "../../lib/prisma.js";
 import supabase from "../../lib/supabase.js"; 
 
 export const createFolder = async (req, res) => {
-  const { name } = req.body;
+  const { name, parentId } = req.body;
 
   await prisma.folder.create({
     data: {
       name,
       userId: req.user.id,
+      parentId: parentId ? Number(parentId) : null,
     },
   });
+
+  // redirect back to parent folder if exists
+  if (parentId) {
+    return res.redirect(`/folders/${parentId}`);
+  }
 
   res.redirect("/folders");
 };
 
 export const getFolders = async (req, res) => {
   const folders = await prisma.folder.findMany({
-    where: { userId: req.user.id },
+    where: { userId: req.user.id, parentId: null, },
     include: { files: true },
   });
 
@@ -34,6 +40,7 @@ export const getFolderById = async (req, res) => {
       },
       include: {
         files: true,
+        children: true,
       },
     });
 
@@ -44,42 +51,56 @@ export const getFolderById = async (req, res) => {
       });
     }
 
-    res.render("folderDetails", { folder });
+    res.render("folderDetails", { folder, currentFolder: folder });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error fetching folder");
   }
 };
 
+const deleteFolderRecursive = async (folderId) => {
+  // 1. find subfolders
+  const subfolders = await prisma.folder.findMany({
+    where: { parentId: folderId },
+  });
+
+  // 2. delete subfolders first
+  for (const sub of subfolders) {
+    await deleteFolderRecursive(sub.id);
+  }
+
+  // 3. delete files in this folder
+  const files = await prisma.file.findMany({
+    where: { folderId },
+  });
+
+  for (const file of files) {
+    if (!file.path) continue;
+
+    const { error } = await supabase.storage
+      .from("files")
+      .remove([file.path]);
+
+    if (error) {
+      console.error("Failed deleting:", file.path);
+    }
+  }
+
+  // 4. delete folder
+  await prisma.folder.delete({
+    where: { id: folderId },
+  });
+};
+
 export const deleteFolder = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const files = await prisma.file.findMany({
-      where: { folderId: Number(id) },
-    });
-
-    // Delete files from Supabase one by one
-    for (const file of files) {
-      if (!file.path) continue;
-
-      const { error } = await supabase.storage
-        .from("files")
-        .remove([file.path]); 
-        console.log("Deleting path:", file.path);
-
-      if (error) console.error(`Failed to delete ${file.path} from Supabase:`, error.message);
-      else console.log(`Deleted ${file.path} from Supabase`);
-    }
-
-    // Delete folder (cascade deletes file records in DB)
-    await prisma.folder.delete({
-      where: { id: Number(id) },
-    });
+    await deleteFolderRecursive(Number(id));
 
     res.redirect("/folders");
   } catch (err) {
-    console.error("Failed to delete folder:", err);
+    console.error(err);
     res.status(500).send("Failed to delete folder");
   }
 };
