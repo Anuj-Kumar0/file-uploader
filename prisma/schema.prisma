@@ -29,12 +29,13 @@ model User {
 }
 
 model Folder {
-  id        Int      @id @default(autoincrement())
-  name      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  files     File[]
-  createdAt DateTime @default(now())
+  id           Int            @id @default(autoincrement())
+  name         String
+  userId       Int
+  user         User           @relation(fields: [userId], references: [id])
+  files        File[]
+  createdAt    DateTime       @default(now())
+  SharedFolder SharedFolder[]
 }
 
 model File {
@@ -49,4 +50,12 @@ model File {
   folder   Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+}
+
+model SharedFolder {
+  id        String   @id @default(uuid())
+  folderId  Int
+  expiresAt DateTime
+
+  folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
 }
