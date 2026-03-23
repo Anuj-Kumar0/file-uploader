@@ -41,6 +41,10 @@ app.use(
 
 app.use(passport.session());
 
+app.get("/", (req, res) => {
+  res.redirect("/upload");
+});
+
 app.use("/", authRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/folders", folderRoutes);
