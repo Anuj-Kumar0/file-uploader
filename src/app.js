@@ -9,6 +9,7 @@ import authRoutes from "./routes/authRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import folderRoutes from "./routes/folderRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
+import shareRoutes from "./routes/shareRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,6 +45,7 @@ app.use("/", authRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/folders", folderRoutes);
 app.use("/files", fileRoutes);
+app.use("/share", shareRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
