@@ -5,12 +5,17 @@ import fs from "fs";
 export const getUploadPage = async (req, res) => {
   try {
     const folders = await prisma.folder.findMany({
+      where: { userId: req.user.id, parentId: null, },
+    });
+
+    const files = await prisma.file.findMany({
       where: {
         userId: req.user.id,
+        folderId: null,
       },
     });
 
-    res.render("upload", { folders, error: null });
+    res.render("upload", { folders, files, error: null });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error loading upload page");
