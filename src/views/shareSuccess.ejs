@@ -9,13 +9,14 @@
 </head>
 
 <body>
-    <h2>Share Link</h2>
+    <%- include("partials/header") %>
+        <h2>Share Link</h2>
 
-    <p>Copy this link:</p>
+        <p>Copy this link:</p>
 
-    <input value="<%= link %>" readonly style="width:300px; cursor:text;" onclick="this.select();" />
+        <input value="<%= link %>" readonly style="width:300px; cursor:text;" onclick="this.select();" />
 
-    <a href="<%= link %>" target="_blank">Open</a>
+        <a href="<%= link %>" target="_blank">Open</a>
 </body>
 
 </html>
