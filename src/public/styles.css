@@ -113,9 +113,11 @@ li {
     background: #020617;
     border: 1px solid #1f2937;
     margin-bottom: 10px;
+
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
 }
 
 /* nested files */
@@ -165,7 +167,7 @@ li ul li {
     gap: 10px;
 }
 
-/* FILE INPUT WRAPPER */
+/* FILE INPUT */
 .file-label {
     display: inline-block;
     padding: 12px 16px;
@@ -178,18 +180,15 @@ li ul li {
     transition: all 0.2s ease;
 }
 
-/* HOVER EFFECT */
 .file-label:hover {
     background: #111827;
     border-color: #60a5fa;
 }
 
-/* ACTIVE CLICK */
 .file-label:active {
     transform: scale(0.97);
 }
 
-/* FILE NAME TEXT */
 #fileName {
     font-size: 14px;
     color: #94a3b8;
@@ -197,7 +196,7 @@ li ul li {
     display: block;
 }
 
-/* NAVBAR BASE */
+/* NAVBAR */
 .navbar {
     position: sticky;
     top: 0;
@@ -208,13 +207,11 @@ li ul li {
     transition: all 0.3s ease;
 }
 
-/* SCROLL EFFECT */
 .navbar.scrolled {
     background: rgba(2, 6, 23, 0.95);
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
-/* CONTAINER */
 .nav-container {
     max-width: 900px;
     margin: auto;
@@ -224,20 +221,12 @@ li ul li {
     align-items: center;
 }
 
-/* LOGO */
 .logo {
     font-size: 30px;
     font-weight: 600;
     color: #f8fafc;
-    letter-spacing: 0.5px;
-    transition: transform 0.2s ease;
 }
 
-.logo:hover {
-    transform: scale(1.05);
-}
-
-/* NAV LINKS */
 nav {
     display: flex;
     gap: 20px;
@@ -248,10 +237,8 @@ nav a {
     font-size: 14px;
     color: #cbd5f5;
     padding: 6px 4px;
-    transition: color 0.2s ease;
 }
 
-/* UNDERLINE ANIMATION */
 nav a::after {
     content: "";
     position: absolute;
@@ -271,7 +258,6 @@ nav a:hover::after {
     width: 100%;
 }
 
-/* LOGOUT BUTTON STYLE */
 .logout {
     color: #f87171;
 }
@@ -292,8 +278,80 @@ nav a:hover::after {
     width: 25px;
     background: white;
     margin: 4px 0;
-    border-radius: 2px;
-    transition: all 0.3s ease;
+}
+
+/* SHARED FOLDER */
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-link {
+    background: #3b82f6;
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: white;
+}
+
+/* FOLDER ACTIONS */
+.folder-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* SHARE */
+.share-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.share-duration {
+    width: 70px;
+    padding: 6px;
+    font-size: 13px;
+}
+
+.share-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+    background: #8b5cf6;
+    margin-bottom: 6px;
+}
+
+.share-btn:hover {
+    background: #7c3aed;
+}
+
+/* DELETE */
+.delete-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+    background: #ef4444;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #22c55e);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: gradientMove 4s linear infinite;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
 }
 
 /* MOBILE */
@@ -311,7 +369,6 @@ nav a:hover::after {
         width: 200px;
         padding: 15px;
         border-radius: 10px;
-        border: 1px solid #1f2937;
 
         opacity: 0;
         transform: translateY(-10px);
@@ -330,7 +387,7 @@ nav a:hover::after {
     }
 }
 
-/* SMALL ANIMATION */
+/* ANIMATIONS */
 @keyframes fadeUp {
     from {
         opacity: 0;
@@ -341,7 +398,6 @@ nav a:hover::after {
         transform: translateY(0);
     }
 }
-
 
 @keyframes fadeIn {
     from {
@@ -358,21 +414,5 @@ nav a:hover::after {
 @media (min-width: 640px) {
     body {
         padding: 40px;
-    }
-
-    li {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    li form {
-        margin-left: auto;
-    }
-}
-
-@media (min-width: 768px) {
-    .card {
-        padding: 32px;
     }
 }
