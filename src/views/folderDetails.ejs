@@ -17,7 +17,65 @@
                 <h2>📁 <%= folder.name %>
                 </h2>
 
-                <a href="/folders">← Back</a>
+                <a href="<%= folder.parentId ? '/folders/' + folder.parentId : '/folders' %>">
+                    ← Back
+                </a>
+
+                <h3>Upload File Here</h3>
+
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="folderId" value="<%= folder.id %>" />
+
+                    <!-- Hidden real input -->
+                    <input type="file" id="fileInput" name="file" required hidden />
+
+                    <!-- Custom button -->
+                    <label for="fileInput" class="file-label">
+                        Choose File
+                    </label>
+
+                    <span id="fileName">No file selected</span>
+                    <button type="submit">Upload</button>
+                </form>
+
+                <h3>Subfolders</h3>
+
+                <form method="POST" action="/folders">
+                    <input type="hidden" name="parentId" value="<%= folder.id %>" />
+                    <input name="name" placeholder="New subfolder name" required />
+                    <button type="submit">Create</button>
+                </form>
+
+                <ul>
+                    <% if (folder.children.length> 0) { %>
+                        <% folder.children.forEach(child=> { %>
+                            <li style="display: flex; align-items: center; gap: 10px;">
+                                <!-- Folder name on left -->
+                                <a href="/folders/<%= child.id %>">
+                                    📁 <%= child.name %>
+                                </a>
+
+
+                                <div class="folder-actions">
+                                    <form method="POST" action="/share" class="share-form">
+                                        <input type="hidden" name="folderId" value="<%= folder.id %>" />
+
+                                        <input class="share-duration" name="duration" placeholder="Days" required />
+
+                                        <button class="share-btn">Share</button>
+                                    </form>
+
+                                    <form method="POST" action="/folders/delete/<%= folder.id %>">
+                                        <button class="delete-btn" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </li>
+                            <% }) %>
+                                <% } else { %>
+                                    <p>No subfolders</p>
+                                    <% } %>
+                </ul>
+
 
                 <ul>
                     <% if (folder.files.length> 0) { %>
@@ -35,7 +93,7 @@
                 </ul>
             </div>
         </div>
-
+        <script src="/script.js"></script>
 </body>
 
 </html>
