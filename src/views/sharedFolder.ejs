@@ -11,25 +11,26 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="card">
-            <h2 class="folder-title">Shared Folder: <%= folder.name %>
-            </h2>
+    <%- include("partials/header") %>
+        <div class="container">
+            <div class="card">
+                <h2 class="folder-title">Shared Folder: <%= folder.name %>
+                </h2>
 
-            <ul class="file-list">
-                <% folder.files.forEach(file=> { %>
-                    <li class="file-item">
-                        <span class="file-name">
-                            <%= file.filename %>
-                        </span>
-                        <a class="file-link" href="<%= file.url %>" target="_blank">
-                            View File
-                        </a>
-                    </li>
-                    <% }) %>
-            </ul>
+                <ul class="file-list">
+                    <% folder.files.forEach(file=> { %>
+                        <li class="file-item">
+                            <span class="file-name">
+                                <%= file.filename %>
+                            </span>
+                            <a class="file-link" href="<%= file.url %>" target="_blank">
+                                View File
+                            </a>
+                        </li>
+                        <% }) %>
+                </ul>
+            </div>
         </div>
-    </div>
 </body>
 
 </html>
