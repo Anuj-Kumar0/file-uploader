@@ -28,38 +28,28 @@ export const uploadFile = async (req, res) => {
 
     if (!req.file) {
       return res.render("upload", {
-        folders: await prisma.folder.findMany({
-          where: { userId: req.user.id },
-        }),
-        error: "Please select a file"
+        folders: await prisma.folder.findMany({ where: { userId: req.user.id } }),
+        error: "Please select a file",
       });
     }
 
-    const fileBuffer = fs.readFileSync(req.file.path);
     const fileName = Date.now() + "-" + req.file.originalname;
+    const fileBuffer = req.file.buffer; // use buffer instead of fs.readFileSync
 
     // upload to supabase
-    const { error } = await supabase.storage
-      .from("files")
-      .upload(fileName, fileBuffer);
+    const { error } = await supabase.storage.from("files").upload(fileName, fileBuffer);
 
     if (error) {
-      console.error("Supabase upload error:", error);
-
       return res.render("upload", {
-        folders: await prisma.folder.findMany({
-          where: { userId: req.user.id },
-        }),
-        error: error.message
+        folders: await prisma.folder.findMany({ where: { userId: req.user.id } }),
+        error: error.message,
       });
     }
 
     // get public URL
-    const { data: publicUrl } = supabase.storage
-      .from("files")
-      .getPublicUrl(fileName);
+    const { data: publicUrl } = supabase.storage.from("files").getPublicUrl(fileName);
 
-      // save in DB
+    // save in DB
     await prisma.file.create({
       data: {
         filename: req.file.originalname,
@@ -70,20 +60,13 @@ export const uploadFile = async (req, res) => {
         folderId: folderId ? Number(folderId) : null,
       },
     });
-    
-// delete local file
-    fs.unlinkSync(req.file.path);
 
     return res.redirect("/");
-
   } catch (err) {
     console.error(err);
-
     return res.render("upload", {
-      folders: await prisma.folder.findMany({
-        where: { userId: req.user.id },
-      }),
-      error: "Something went wrong"
+      folders: await prisma.folder.findMany({ where: { userId: req.user.id } }),
+      error: "Something went wrong",
     });
   }
 };
