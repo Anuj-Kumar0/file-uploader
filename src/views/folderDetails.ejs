@@ -9,90 +9,60 @@
 </head>
 
 <body>
-
     <%- include("partials/header") %>
 
-        <div class="container">
-            <div class="card">
-                <h2>📁 <%= folder.name %>
-                </h2>
+        <div class="container layout">
 
-                <a href="<%= folder.parentId ? '/folders/' + folder.parentId : '/folders' %>">
-                    ← Back
-                </a>
+            <%- include("partials/sidebar", { currentFolder: folder }) %>
 
-                <h3>Upload File Here</h3>
+                <div class="main-content">
+                    <div class="card">
 
-                <form action="/upload" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="folderId" value="<%= folder.id %>" />
+                        <h2>📁 <%= folder.name %>
+                        </h2>
 
-                    <!-- Hidden real input -->
-                    <input type="file" id="fileInput" name="file" required hidden />
+                        <a href="<%= folder.parentId ? '/folders/' + folder.parentId : '/folders' %>">
+                            ← Back
+                        </a>
 
-                    <!-- Custom button -->
-                    <label for="fileInput" class="file-label">
-                        Choose File
-                    </label>
+                        <h3>Subfolders</h3>
 
-                    <span id="fileName">No file selected</span>
-                    <button type="submit">Upload</button>
-                </form>
+                        <ul>
+                            <% if (folder.children.length> 0) { %>
+                                <% folder.children.forEach(child=> { %>
+                                    <li>
+                                        <a href="/folders/<%= child.id %>">
+                                            📁 <%= child.name %>
+                                        </a>
+                                    </li>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <p>No subfolders</p>
+                                            <% } %>
+                        </ul>
 
-                <h3>Subfolders</h3>
+                        <h3>Files</h3>
 
-                <form method="POST" action="/folders">
-                    <input type="hidden" name="parentId" value="<%= folder.id %>" />
-                    <input name="name" placeholder="New subfolder name" required />
-                    <button type="submit">Create</button>
-                </form>
+                        <ul>
+                            <% if (folder.files.length> 0) { %>
+                                <% folder.files.forEach(file=> { %>
+                                    <li>
+                                        <a href="/files/<%= file.id %>">
+                                            <%= file.filename %>
+                                        </a>
+                                        <span>(<%= file.size %> bytes)</span>
+                                    </li>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <p>No files</p>
+                                            <% } %>
+                        </ul>
 
-                <ul>
-                    <% if (folder.children.length> 0) { %>
-                        <% folder.children.forEach(child=> { %>
-                            <li style="display: flex; align-items: center; gap: 10px;">
-                                <!-- Folder name on left -->
-                                <a href="/folders/<%= child.id %>">
-                                    📁 <%= child.name %>
-                                </a>
+                    </div>
+                </div>
 
-
-                                <div class="folder-actions">
-                                    <form method="POST" action="/share" class="share-form">
-                                        <input type="hidden" name="folderId" value="<%= folder.id %>" />
-
-                                        <input class="share-duration" name="duration" placeholder="Days" required />
-
-                                        <button class="share-btn">Share</button>
-                                    </form>
-
-                                    <form method="POST" action="/folders/delete/<%= folder.id %>">
-                                        <button class="delete-btn" type="submit">Delete</button>
-                                    </form>
-                                </div>
-                            </li>
-                            <% }) %>
-                                <% } else { %>
-                                    <p>No subfolders</p>
-                                    <% } %>
-                </ul>
-
-
-                <ul>
-                    <% if (folder.files.length> 0) { %>
-                        <% folder.files.forEach(file=> { %>
-                            <li>
-                                <a href="/files/<%= file.id %>">
-                                    <%= file.filename %>
-                                </a>
-                                <span>(<%= file.size %> bytes)</span>
-                            </li>
-                            <% }) %>
-                                <% } else { %>
-                                    <p>No files in this folder</p>
-                                    <% } %>
-                </ul>
-            </div>
         </div>
+
         <script src="/script.js"></script>
 </body>
 

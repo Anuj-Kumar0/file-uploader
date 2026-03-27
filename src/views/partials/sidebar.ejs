@@ -1,0 +1,35 @@
+<div class="sidebar">
+    <div class="card">
+
+        <h3>Upload File</h3>
+
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+
+            <% if (typeof currentFolder !=="undefined" ) { %>
+                <input type="hidden" name="folderId" value="<%= currentFolder.id %>" />
+                <% } %>
+
+                    <input type="file" id="fileInput" name="file" required hidden />
+
+                    <label for="fileInput" class="file-label">
+                        Choose File
+                    </label>
+
+                    <span id="fileName">No file selected</span>
+
+                    <button type="submit">Upload</button>
+        </form>
+
+        <h3>Create Folder</h3>
+
+        <form method="POST" action="/folders">
+            <% if (typeof currentFolder !=="undefined" ) { %>
+                <input type="hidden" name="parentId" value="<%= currentFolder.id %>" />
+                <% } %>
+
+                    <input name="name" placeholder="Folder name" required />
+                    <button type="submit">Create</button>
+        </form>
+
+    </div>
+</div>

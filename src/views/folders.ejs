@@ -10,41 +10,40 @@
 
 <body>
     <%- include("partials/header") %>
-        <div class="container">
-            <div class="card">
-                <h2>Your Folders</h2>
 
-                <!-- CREATE FOLDER -->
-                <form method="POST" action="/folders">
-                    <input name="name" placeholder="New folder name" required />
-                    <button type="submit">Create Folder</button>
-                </form>
+        <div class="container layout">
 
-                <!-- FOLDER LIST -->
-                <ul>
-                    <% folders.forEach(folder=> { %>
-                        <li>
-                            <a href="/folders/<%= folder.id %>">
-                                📁 <%= folder.name %>
-                            </a>
+            <%- include("partials/sidebar") %>
 
-                            <div class="folder-actions">
-                                <form method="POST" action="/share" class="share-form">
-                                    <input type="hidden" name="folderId" value="<%= folder.id %>" />
+                <div class="main-content">
+                    <div class="card">
+                        <h2>Your Folders</h2>
 
-                                    <input class="share-duration" name="duration" placeholder="Days" required />
+                        <ul>
+                            <% folders.forEach(folder=> { %>
+                                <li>
+                                    <a href="/folders/<%= folder.id %>">
+                                        📁 <%= folder.name %>
+                                    </a>
 
-                                    <button class="share-btn">Share</button>
-                                </form>
+                                    <div class="folder-actions">
+                                        <form method="POST" action="/share" class="share-form">
+                                            <input type="hidden" name="folderId" value="<%= folder.id %>" />
+                                            <input class="share-duration" name="duration" placeholder="Days" required />
+                                            <button class="share-btn">Share</button>
+                                        </form>
 
-                                <form method="POST" action="/folders/delete/<%= folder.id %>">
-                                    <button class="delete-btn" type="submit">Delete</button>
-                                </form>
-                            </div>
-                        </li>
-                        <% }) %>
-                </ul>
-            </div>
+                                        <form method="POST" action="/folders/delete/<%= folder.id %>">
+                                            <button class="delete-btn" type="submit">Delete</button>
+                                        </form>
+                                    </div>
+                                </li>
+                                <% }) %>
+                        </ul>
+
+                    </div>
+                </div>
+
         </div>
 </body>
 

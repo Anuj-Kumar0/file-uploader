@@ -74,7 +74,7 @@ export const uploadFile = async (req, res) => {
 // delete local file
     fs.unlinkSync(req.file.path);
 
-    return res.redirect("/folders");
+    return res.redirect("/");
 
   } catch (err) {
     console.error(err);
