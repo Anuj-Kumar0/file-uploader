@@ -16,13 +16,23 @@
 
             <h2>Register</h2>
 
-            <form method="POST" action="/register">
-                <input name="email" type="email" placeholder="Email" required />
-                <input name="password" type="password" placeholder="Password" required />
-                <button type="submit">Register</button>
-            </form>
+            <% if (errors.length> 0) { %>
+                <ul style="color:red;">
+                    <% errors.forEach(err=> { %>
+                        <li>
+                            <%= err.msg %>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
 
-            <p>Already have an account? <a href="/login">Login</a></p>
+                    <form method="POST" action="/register">
+                        <input name="email" type="email" placeholder="Email" value="<%= old.email || '' %>" required />
+                        <input name="password" type="password" placeholder="Password" required />
+                        <button type="submit">Register</button>
+                    </form>
+
+                    <p>Already have an account? <a href="/login">Login</a></p>
 
         </div>
     </div>
