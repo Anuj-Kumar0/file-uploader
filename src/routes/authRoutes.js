@@ -1,21 +1,17 @@
 import express from "express";
 import passport from "passport";
-import { registerUser, logoutUser } from "../controllers/authController.js";
+import { registerUser, logoutUser, loginUser } from "../controllers/authController.js";
+import { registerValidation } from "../validators/authValidator.js";
 
 const router = express.Router();
 
-router.get("/register", (req, res) => res.render("register"));
-router.get("/login", (req, res) => res.render("login"));
+router.get("/register", (req, res) => res.render("register", { errors: [], old: {} }));
+router.get("/login", (req, res) => res.render("login", { error: null }));
 
-router.post("/register", registerUser);
+router.post("/register", registerValidation, registerUser);
 
 router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/upload",
-    failureRedirect: "/login",
-  })
-);
+  "/login", loginUser);
 
 router.get("/logout", logoutUser);
 
