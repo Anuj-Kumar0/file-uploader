@@ -29,9 +29,9 @@ This project allows users to securely upload and manage files. It includes featu
 -Set Up Environment Variables
 
 -Create a .env file in the root of the project and add the following configuration values:
--SUPABASE_URL=https://vtapbufgudwjfygdlsvx.supabase.co
--SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
--SESSION_SECRET=fileuploader123
+-SUPABASE_URL=https://vtapbufgudwjfygdl.supabase.co //fake
+-SUPABASE_KEY=eyJhbGciOiJIkpXVCJ9. //fake
+-SESSION_SECRET=fi675uplo123 //fake
 
 -Make sure to replace your-supabase-url and your-supabase-api-key with the credentials from your Supabase project.
 
